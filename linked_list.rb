@@ -71,4 +71,36 @@ class LinkedList
     @size -= 1
     current_node
   end
+
+  def contains?(value)
+    coincidence = false
+    current_node = @head
+    while current_node
+      coincidence = current_node.value == value
+      break if coincidence
+
+      current_node = current_node.next_node
+    end
+    coincidence
+  end
+
+  def find(value) # rubocop:todo Metrics/MethodLength
+    coincidence = false
+    current_node = @head
+    index = 0
+    while current_node
+      coincidence = current_node.value == value
+      break if coincidence
+
+      current_node = current_node.next_node
+      index += 1
+    end
+    return nil unless coincidence
+
+    index
+  end
 end
+
+my_list = LinkedList.new
+('a'..'e').each { |i| my_list.append(i) }
+puts my_list
