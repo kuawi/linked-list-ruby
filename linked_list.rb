@@ -45,4 +45,30 @@ class LinkedList
     end
     string
   end
+
+  def at(index)
+    return nil if index >= @size || index.negative?
+
+    node = head
+    index.times { node = node.next_node }
+    node
+  end
+
+  def pop # rubocop:todo Metrics/MethodLength
+    return 'Cannot pop empty list' if @size.zero?
+
+    prev_node = nil
+    current_node = @head
+    while current_node.next_node
+      prev_node = current_node
+      current_node = current_node.next_node
+    end
+    if @size == 1 then @head = @tail = nil
+    else
+      prev_node.next_node = nil
+      @tail = prev_node
+    end
+    @size -= 1
+    current_node
+  end
 end
