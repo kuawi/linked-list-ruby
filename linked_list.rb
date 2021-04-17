@@ -7,7 +7,7 @@ class Node
   end
 end
 
-class LinkedList
+class LinkedList # rubocop:todo Metrics/ClassLength
   attr_accessor :head, :tail, :size
 
   def initialize
@@ -54,6 +54,13 @@ class LinkedList
     node
   end
 
+  def shift
+    prev_head = @head
+    @head = at(1)
+    @size -= 1
+    prev_head
+  end
+
   def pop # rubocop:todo Metrics/MethodLength
     return 'Cannot pop empty list' if @size.zero?
 
@@ -98,6 +105,32 @@ class LinkedList
     return nil unless coincidence
 
     index
+  end
+
+  def insert_at(value, index)
+    return prepend(value) if index.zero?
+    return append(value) if index == @size
+
+    prev_node = at(index - 1)
+    return 'Invalid index' unless prev_node
+
+    prev_node.next_node = Node.new(value, at(index))
+    @size += 1
+    prev_node.next_node.value
+  end
+
+  def delete_at(index)
+    return 'Invalid index' if index >= @size
+    return pop if index == @size - 1
+    return shift if index.zero?
+
+    prev_node = at(index - 1)
+    return 'Invalid index' unless prev_node
+
+    del_node = prev_node.next_node
+    prev_node.next_node = del_node.next_node
+    @size -= 1
+    del_node
   end
 end
 
